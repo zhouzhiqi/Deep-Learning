@@ -67,9 +67,11 @@ def densenet(images, num_classes=1001, is_training=False,
             pass
             ##########################
             # 299 x 299 x 3
+            print(images.get_shape().as_list(),'logits')
             end_point = 'Conv_0'
             net = slim.conv2d(images, growth, [3,3], stride=2, padding='SAME', scope=end_point)
             end_point = 'Pool_0'
+            print(net.get_shape().as_list(),'net')
             net = slim.max_pool2d(net, [3,3], stride=2, padding='SAME', scope=end_point)
             end_points[end_point] = net
             # 56 x 56 x 24
@@ -101,14 +103,12 @@ def densenet(images, num_classes=1001, is_training=False,
             net_shape = net.get_shape().as_list()
 
             net = slim.avg_pool2d(net, net_shape[1:3], scope=end_point)
-            print(net.get_shape().as_list(),'avg')
             net = slim.conv2d(net, num_classes, [1, 1], activation_fn=None,
                              normalizer_fn=None, scope=end_point)
-            print(net.get_shape().as_list(),'con')
             logits = tf.squeeze(net, [1, 2], name=end_point)
             end_points[end_point] = logits
             
-            # Put your code here.
+            
             ##########################
 
     return logits, end_points
