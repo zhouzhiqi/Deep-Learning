@@ -66,12 +66,11 @@ def densenet(images, num_classes=1001, is_training=False,
                                          keep_prob=dropout_keep_prob)) as ssc:
             pass
             ##########################
-            # 299 x 299 x 3
-            print(images.get_shape().as_list(),'logits')
+            # 244 x 244 x 3
             end_point = 'Conv_0'
             net = slim.conv2d(images, growth, [3,3], stride=2, padding='SAME', scope=end_point)
             end_point = 'Pool_0'
-            print(net.get_shape().as_list(),'net')
+            # 112 x 112 x 24
             net = slim.max_pool2d(net, [3,3], stride=2, padding='SAME', scope=end_point)
             end_points[end_point] = net
             # 56 x 56 x 24
@@ -79,17 +78,16 @@ def densenet(images, num_classes=1001, is_training=False,
             net = block(net, 6, growth, scope=end_point)
             net = bn_act_conv_drp(net, 16, [1,1], scope=end_point)
             end_points[end_point] = net
-
             # 56 x 56 x 16
             end_point = 'dense_2'
             net = block(net, 12, growth, scope=end_point)
-            net = bn_act_conv_drp(net, 32, [1,1], scope=end_point)
+            net = bn_act_conv_drp(net, 16, [1,1], scope=end_point)
             end_points[end_point] = net
 
             # 56 x 56 x 32
             end_point = 'dense_3'
             net = block(net, 24, growth, scope=end_point)
-            net = bn_act_conv_drp(net, 64, [1,1], scope=end_point)
+            net = bn_act_conv_drp(net, 16, [1,1], scope=end_point)
             end_points[end_point] = net
 
             # 56 x 56 x 64
@@ -107,7 +105,6 @@ def densenet(images, num_classes=1001, is_training=False,
                              normalizer_fn=None, scope=end_point)
             logits = tf.squeeze(net, [1, 2], name=end_point)
             end_points[end_point] = logits
-            
             
             ##########################
 
