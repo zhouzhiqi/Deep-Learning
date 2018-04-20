@@ -1,0 +1,13 @@
+python3 train_eval_image_classifier.py \
+  --dataset_name=quiz \
+  --dataset_dir=/data/ai100/quiz-w7 \
+  --model_name=densenet \
+  --train_dir=/output/ckpt \
+  --learning_rate=0.1 \
+  --dataset_split_name=validation \
+  --eval_dir=/output/eval \
+  --max_num_batches=16 \
+  --batch_size=4 \
+  --output_dir=/output \
+  --optimizer=adam \
+  --max_number_of_steps=3200 \
