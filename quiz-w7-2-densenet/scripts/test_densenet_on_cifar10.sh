@@ -25,42 +25,19 @@
 set -e
 
 # Where the checkpoint and logs will be saved to.
-TRAIN_DIR=/output/ckpt
+#TRAIN_DIR=~/tmp/cifarnet-model
+TRAIN_DIR=~/tmp/densenet-model
 
 # Where the dataset is saved to.
-DATASET_DIR=/data/ai100/quiz-w7
+DATASET_DIR=~/tmp/cifar10
 
-# Run training.
-python train_image_classifier.py \
-  --max_num_batches=16 \
-  --output_dir=/output \
-  --train_dir=${TRAIN_DIR} \
-  --dataset_name=quiz \
-  --dataset_dir=${DATASET_DIR} \
-  --model_name=densenet \
-  --preprocessing_name=densenet \
-  --max_number_of_steps=200 \
-  --batch_size=4 \
-  --save_interval_secs=120 \
-  --save_summaries_secs=120 \
-  --log_every_n_steps=100 \
-  --optimizer=adam \
-  --learning_rate=0.1 \
-  --learning_rate_decay_factor=0.1 \
-  --num_epochs_per_decay=200 \
-  --weight_decay=0.004
-
+  #--model_name=cifarnet
 # Run evaluation.
 python eval_image_classifier.py \
-  --max_num_batches=16 \
-  --output_dir=/output \
   --checkpoint_path=${TRAIN_DIR} \
-  --eval_dir=/output/eval \
-  --dataset_name=quiz \
-  --dataset_split_name=validation \
+  --eval_dir=${TRAIN_DIR} \
+  --dataset_name=cifar10 \
+  --dataset_split_name=test \
   --dataset_dir=${DATASET_DIR} \
   --model_name=densenet \
-
-
-
-
+  --batch_size=32

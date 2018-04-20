@@ -40,12 +40,13 @@ python train_image_classifier.py \
   --model_name=densenet \
   --preprocessing_name=densenet \
   --max_number_of_steps=100000 \
-  --batch_size=2 \
+  --batch_size=64 \
   --save_interval_secs=120 \
   --save_summaries_secs=120 \
   --log_every_n_steps=100 \
   --optimizer=adam \
-  --learning_rate=0.1 \
-  --learning_rate_decay_factor=0.1 \
+  --learning_rate=0.01 \
+  --learning_rate_decay_factor=0.8 \
   --num_epochs_per_decay=200 \
-  --weight_decay=0.004
+  --weight_decay=0.004 \
+  --train_image_size=32
