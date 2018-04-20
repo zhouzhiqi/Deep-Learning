@@ -76,24 +76,24 @@ def densenet(images, num_classes=1001, is_training=False,
             # 56 x 56 x 24
             end_point = 'dense_1'
             net = block(net, 6, growth, scope=end_point)
-            net = bn_act_conv_drp(net, 16, [1,1], scope=end_point)
+            net = bn_act_conv_drp(net, 4, [1,1], scope=end_point)
             end_points[end_point] = net
             # 56 x 56 x 16
             end_point = 'dense_2'
             net = block(net, 12, growth, scope=end_point)
-            net = bn_act_conv_drp(net, 16, [1,1], scope=end_point)
+            net = bn_act_conv_drp(net, 4, [1,1], scope=end_point)
             end_points[end_point] = net
 
             # 56 x 56 x 32
             end_point = 'dense_3'
             net = block(net, 24, growth, scope=end_point)
-            net = bn_act_conv_drp(net, 16, [1,1], scope=end_point)
+            net = bn_act_conv_drp(net, 4, [1,1], scope=end_point)
             end_points[end_point] = net
 
             # 56 x 56 x 64
             end_point = 'dense_4'
             net = block(net, 16, growth, scope=end_point)
-            net = bn_act_conv_drp(net, 16, [1,1], scope=end_point)
+            net = bn_act_conv_drp(net, 4, [1,1], scope=end_point)
             end_points[end_point] = net
 
             # 56 x 56 x 16
