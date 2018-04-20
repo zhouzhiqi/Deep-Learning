@@ -67,39 +67,23 @@ def densenet(images, num_classes=1001, is_training=False,
             pass
             ##########################
             # 244 x 244 x 3
+            #print(images.get_shape().as_list(),'----------------------------------------------')
             end_point = 'Conv_0'
-            net = slim.conv2d(images, growth, [3,3], stride=2, padding='SAME', scope=end_point)
+            net = slim.conv2d(images, growth, [3,3], stride=1, padding='SAME', scope=end_point)
             end_point = 'Pool_0'
             # 112 x 112 x 24
             net = slim.max_pool2d(net, [3,3], stride=2, padding='SAME', scope=end_point)
             end_points[end_point] = net
-            # 56 x 56 x 24
-            end_point = 'dense_1'
-            net = block(net, 6, growth, scope=end_point)
-            net = bn_act_conv_drp(net, 4, [1,1], scope=end_point)
-            end_points[end_point] = net
-            # 56 x 56 x 16
-            end_point = 'dense_2'
-            net = block(net, 12, growth, scope=end_point)
-            net = bn_act_conv_drp(net, 4, [1,1], scope=end_point)
-            end_points[end_point] = net
-
-            # 56 x 56 x 32
-            end_point = 'dense_3'
-            net = block(net, 24, growth, scope=end_point)
-            net = bn_act_conv_drp(net, 4, [1,1], scope=end_point)
-            end_points[end_point] = net
-
-            # 56 x 56 x 64
-            end_point = 'dense_4'
-            net = block(net, 16, growth, scope=end_point)
-            net = bn_act_conv_drp(net, 4, [1,1], scope=end_point)
-            end_points[end_point] = net
+            
+            for i in range(4):
+                end_point = 'dense_{}'.format(i+1)
+                net = block(net, 6, growth, scope=end_point)
+                net = bn_act_conv_drp(net, (i+1)*8, [1,1], scope=end_point)
+                end_points[end_point] = net
 
             # 56 x 56 x 16
             end_point = 'logits'
             net_shape = net.get_shape().as_list()
-
             net = slim.avg_pool2d(net, net_shape[1:3], scope=end_point)
             net = slim.conv2d(net, num_classes, [1, 1], activation_fn=None,
                              normalizer_fn=None, scope=end_point)
